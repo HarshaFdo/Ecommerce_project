@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-</admincss/html>
+</admincss /html>
 
 <head>
   @include('admin.css')
 
   <style type="text/css">
-    input[type='text']
-    {
+    input[type='text'] {
       width: 400px;
       height: 43px;
     }
 
-    .div_deg
-    {
+    .div_deg {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -22,13 +20,13 @@
 
 <body>
   @include('admin.header')
-    @include('admin.sidebar')
-    <div class="page-content">
-      <div class="page-header">
-        <div class="container-fluid">
-          <h2 style="color: white">Add Category</h2>
-          <div class="div_deg">
-            
+  @include('admin.sidebar')
+  <div class="page-content">
+    <div class="page-header">
+      <div class="container-fluid">
+        <h2 style="color: white">Add Category</h2>
+        <div class="div_deg">
+
           <form action="{{url('add_category')}}" method="post">
             @csrf
             <div>
@@ -36,8 +34,8 @@
               <input class="btn btn-primary" type="submit" value="Add Category">
             </div>
           </form>
-          </div>
-        </div>    
+        </div>
+      </div>
     </div>
   </div>
   <!-- JavaScript files-->
