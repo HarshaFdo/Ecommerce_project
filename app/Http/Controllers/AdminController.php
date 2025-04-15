@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Category;
+use Flasher\Laravel\Facade\Flasher;
 
 class AdminController extends Controller
 {
@@ -21,7 +22,7 @@ class AdminController extends Controller
 
         $category->save();
 
-        toastr()->addSuccess('Category Added Successfully');
+        Flasher::timeout(10000)->addSuccess('Category Added Successfully');
 
         return redirect()->back();
     }
