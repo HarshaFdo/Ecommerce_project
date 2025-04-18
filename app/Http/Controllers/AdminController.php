@@ -28,4 +28,22 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    public function delete_category($id)
+    {
+        $data = Category::find($id);
+
+        $data->delete();
+
+        Flasher::timeout(10000)->addSuccess('Category Deleted Successfully');
+
+        return redirect()->back();
+    }
+
+    public function edit_category($id)
+    {
+        $data = Category::find($id);
+        
+        return view('admin.edit_category',compact('data'));
+    }
 }
