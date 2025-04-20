@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Category;
+use App\Models\Product;
 use Flasher\Laravel\Facade\Flasher;
 
 class AdminController extends Controller
 {
-    public function view_category() 
+    public function view_category()
     {
         $data = Category::all();
 
@@ -43,21 +44,60 @@ class AdminController extends Controller
     public function edit_category($id)
     {
         $data = Category::find($id);
-        
-        return view('admin.edit_category',compact('data'));
+
+        return view('admin.edit_category', compact('data'));
     }
 
-    public function update_category(Request $request,$id)
+    public function update_category(Request $request, $id)
     {
         // dd($request->all());
         $data = Category::find($id);
 
-        $data->category_name= $request->category;
+        $data->category_name = $request->category;
 
         $data->save();
 
         Flasher::timeout(10000)->addSuccess('Category Updated Successfully');
 
         return redirect('/view_category');
+    }
+
+    public function add_product()
+    {
+        $category = Category::all();
+
+        return view('admin.add_product', compact('category'));
+    }
+
+    public function upload_product(Request $request)
+    {
+        $data = new Product;
+
+        $data->title = $request->title;
+
+        $data->description = $request->description;
+
+        $data->price = $request->price;
+
+        $data->quantity = $request->qty;
+
+        $data->category = $request->category;
+
+        $image = $request->image;
+
+        if ($image) {
+            
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+
+            $request->image->move('products', $imagename);
+
+            $data->image = $imagename;
+        }
+
+        $data->save();
+
+        Flasher::timeout(10000)->addSuccess('Product Updated Successfully');
+
+        return redirect()->back();
     }
 }
