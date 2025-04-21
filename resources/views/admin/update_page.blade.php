@@ -14,7 +14,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 60px 20px;
+      padding: 60px 30px;
       width: 100%;
     }
 
@@ -27,7 +27,7 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
+    h2 {
       color: #00adb5;
       text-align: center;
       margin-bottom: 30px;
@@ -87,12 +87,20 @@
       background-color: #007d82;
     }
 
+    img.preview {
+      display: block;
+      margin: 10px auto 20px;
+      max-width: 150px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
     @media screen and (max-width: 768px) {
       .form-container {
         padding: 25px;
       }
 
-      h1 {
+      h2 {
         font-size: 24px;
       }
 
@@ -105,47 +113,48 @@
   </style>
 </head>
 
-
 <body>
   @include('admin.header')
   @include('admin.sidebar')
-
   <div class="form-wrapper">
     <div class="form-container">
-      <h1>Add Product</h1>
-      <form action="{{url('upload_product')}}" method="POST" enctype="multipart/form-data">
+      <h2>Update Product</h2>
+      <form action="{{ url('edit_product/'.$data->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <label>Product Title</label>
-        <input type="text" name="title" placeholder="Enter product title" required>
+        <label>Title</label>
+        <input type="text" name="title" value="{{$data->title}}">
 
         <label>Description</label>
-        <textarea name="description" rows="4" placeholder="Write product description..." required></textarea>
+        <textarea name="description">{{$data->description}}</textarea>
 
         <label>Price</label>
-        <input type="text" name="price" placeholder="Enter price">
+        <input type="text" name="price" value="{{$data->price}}">
 
         <label>Quantity</label>
-        <input type="number" name="qty" placeholder="Enter quantity">
+        <input type="number" name="quantity" value="{{$data->quantity}}">
 
-        <label>Product Category</label>
-        <select name="category" required>
-          <option disabled selected>Select a category</option>
+        <label>Category</label>
+        <select name="category">
+          <option value="{{$data->category}}">{{$data->category}}</option>
           @foreach($category as $category)
-          <option value="{{$category->category_name}}">{{$category->category_name}}</option>
+          <option value="{{$category->category_name}}</">{{$category->category_name}}</option>
           @endforeach
         </select>
 
-        <label>Product Image</label>
+        <label>Current Image</label>
+        <img width="150" src="/products/{{$data->image}}">
+
+        <label>New Image</label>
         <input type="file" name="image">
 
-        <button type="submit" class="btn-submit">Add Product</button>
+        <button type="submit" class="btn-submit">Update Product</button>
+
       </form>
     </div>
   </div>
-
+  <!-- JavaScript files-->
   @include('admin.js')
 </body>
-
 
 </html>
