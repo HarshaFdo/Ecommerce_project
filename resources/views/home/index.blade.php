@@ -10,7 +10,7 @@
     @include('home.header')
     @include('home.slider')
   </div>
-  @include('home.product')
+  @include('home.product',['product'=>$product])
   @include('home.contact')
   <br><br><br>
   @include('home.footer')
