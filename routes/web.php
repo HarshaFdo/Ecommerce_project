@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+
 use App\Http\Controllers\AdminController;
+use App\Http\Middleware\Admin;
 
 Route::get('/',[HomeController::class, 'home']);
 
@@ -48,4 +50,12 @@ Route::get('product_search', [AdminController::class,'product_search'])->middlew
 Route::get('product_details/{id}', [HomeController::class,'product_details']);
 
 Route::get('add_cart/{id}', [HomeController::class,'add_cart'])->middleware(['auth', 'verified']);
+
+Route::get('mycart', [HomeController::class,'mycart'])->middleware(['auth', 'verified']);
+
+Route::get('delete_cart/{id}', [HomeController::class, 'delete_cart'])->middleware(['auth', 'verified']);
+
+Route::post('confirm_order', [HomeController::class, 'confirm_order'])->middleware(['auth', 'verified']);
+
+Route::post('view_orders', [AdminController::class, 'view_orders'])->middleware(['auth', 'admin']);
 
