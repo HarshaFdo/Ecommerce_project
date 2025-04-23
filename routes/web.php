@@ -12,6 +12,8 @@ Route::get('/',[HomeController::class, 'home']);
 
 Route::get('/dashboard', [HomeController::class, 'login_home'])->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/myorders', [HomeController::class, 'myorders'])->middleware(['auth', 'verified']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -57,5 +59,18 @@ Route::get('delete_cart/{id}', [HomeController::class, 'delete_cart'])->middlewa
 
 Route::post('confirm_order', [HomeController::class, 'confirm_order'])->middleware(['auth', 'verified']);
 
-Route::post('view_orders', [AdminController::class, 'view_orders'])->middleware(['auth', 'admin']);
+Route::get('view_orders', [AdminController::class, 'view_orders'])->middleware(['auth', 'admin']);
+
+Route::get('on_the_way/{id}', [AdminController::class, 'on_the_way'])->middleware(['auth', 'admin']);
+
+Route::get('delivered/{id}', [AdminController::class, 'delivered'])->middleware(['auth', 'admin']);
+
+Route::get('print_pdf/{id}', [AdminController::class, 'print_pdf'])->middleware(['auth', 'admin']);
+
+use App\Http\Controllers\GmailController;
+
+Route::get('/generate-token', [GmailController::class, 'generateToken']);
+Route::get('/oauth2callback', [GmailController::class, 'oauthCallback']);
+Route::get('/oauth2callback', [GmailController::class, 'oauthCallback']);
+Route::get('/generate-token', [GmailController::class, 'redirectToGoogle']);
 

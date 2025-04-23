@@ -167,7 +167,7 @@
         </div>
         <div class="form_group">
           <label>Receiver Phone</label>
-          <input type="text" name="name">
+          <input type="text" name="phone">
         </div>
         <div class="form_group">
           <input class="btn-submit" type="submit" value="Place Order">

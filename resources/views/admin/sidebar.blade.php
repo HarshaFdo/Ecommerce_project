@@ -13,8 +13,8 @@
     <!-- Sidebar Navidation Menus-->
     <span class="heading">Main</span>
     <ul class="list-unstyled">
-      <li class="active">
-        <a href="index.html">
+      <li>
+        <a href="{{url('admin/dashboard')}}">
           <i class="icon-home"></i>
           Home
         </a>

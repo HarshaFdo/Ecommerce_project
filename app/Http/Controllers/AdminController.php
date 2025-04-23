@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Order;
 use Flasher\Laravel\Facade\Flasher;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -86,7 +88,7 @@ class AdminController extends Controller
         $image = $request->image;
 
         if ($image) {
-            
+
             $imagename = time() . '.' . $image->getClientOriginalExtension();
 
             $request->image->move('products', $imagename);
@@ -104,17 +106,16 @@ class AdminController extends Controller
     public function view_product()
     {
         $product = Product::paginate(3);
-        return view('admin.view_product',compact('product'));
+        return view('admin.view_product', compact('product'));
     }
 
     public function delete_product($id)
     {
         $data = Product::find($id);
 
-        $image_path = public_path('product/'.$data->image);
+        $image_path = public_path('products/' . $data->image);
 
-        if (file_exists($image_path))
-        {
+        if (file_exists($image_path)) {
             unlink($image_path);
         }
 
@@ -131,10 +132,10 @@ class AdminController extends Controller
 
         $category = Category::all();
 
-        return view('admin.update_page',compact('data','category'));
+        return view('admin.update_page', compact('data', 'category'));
     }
 
-    public function edit_product(Request $request,$id)
+    public function edit_product(Request $request, $id)
     {
         $data = Product::find($id);
 
@@ -145,11 +146,10 @@ class AdminController extends Controller
         $data->category = $request->category;
         $image = $request->image;
 
-        if ($image)
-        {
-            $imagename = time().'.'.$image->getClientOriginalExtension();
+        if ($image) {
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
 
-            $request->image->move('products',$imagename);
+            $request->image->move('products', $imagename);
 
             $data->image = $imagename;
         }
@@ -165,13 +165,46 @@ class AdminController extends Controller
     {
         $search = $request->search;
 
-        $product = Product::where('title','LIKE','%'.$search.'%')->orWhere('title','LIKE','%'.$search.'%')->paginate(3);
+        $product = Product::where('title', 'LIKE', '%' . $search . '%')->orWhere('title', 'LIKE', '%' . $search . '%')->paginate(3);
 
-        return view('admin.view_product',compact('product'));
+        return view('admin.view_product', compact('product'));
     }
 
     public function view_orders()
     {
-        return view('admin.order');
+        $data = Order::all();
+
+        return view('admin.order', compact('data'));
+    }
+
+    public function on_the_way($id)
+    {
+        $data = Order::find($id);
+
+        $data->status = 'on_the_way';
+
+        $data->save();
+
+        return redirect('/view_orders');
+    }
+
+    public function delivered($id)
+    {
+        $data = Order::find($id);
+
+        $data->status = 'delivered';
+
+        $data->save();
+
+        return redirect('/view_orders');
+    }
+
+    public function print_pdf($id)
+    {
+        $data = Order::find($id);
+
+        $pdf = Pdf::loadView('admin.invoice',compact('data'));
+
+        return $pdf->download('invoice.pdf');
     }
 }
