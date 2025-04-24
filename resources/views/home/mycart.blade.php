@@ -170,7 +170,7 @@
           <input type="text" name="phone">
         </div>
         <div class="form_group">
-          <input class="btn-submit" type="submit" value="Place Order">
+          <input class="btn-submit" type="submit" value="Cash On Delivery">
         </div>
       </form>
     </div>
